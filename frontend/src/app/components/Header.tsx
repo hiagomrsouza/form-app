@@ -1,6 +1,7 @@
 'use client'
 import styled from 'styled-components'
 import { Colors } from '../utils/Colors'
+import { useRouter } from 'next/navigation'
 
 const HeaderContainer = styled.div`
   display: grid;
@@ -13,13 +14,24 @@ const HeaderContainer = styled.div`
 const Section = styled.div`
   grid-column: 2 / span 10;
   padding: 12px;
+  `
+
+const Title = styled.h1`
+  cursor: pointer;
+  background: ${Colors.background.default};
 `
 
 export function Header() {
+  const router = useRouter();
+
+  const handleClickTitle = () => {
+    router.push('/');
+  }
+
   return (
     <HeaderContainer>
       <Section>
-        <h1>Forms</h1>
+        <Title onClick={handleClickTitle}>Forms</Title>
       </Section>
     </HeaderContainer>
   )

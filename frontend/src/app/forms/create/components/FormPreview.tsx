@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import { Colors } from '@/app/utils/Colors';
-import { FormData } from '../types';
+import { FeatureType, FormData } from '../types';
 import { InfoAlert } from '@/app/components';
 import { FormFieldAdded } from './FormFieldAdded';
 
@@ -75,14 +75,19 @@ const EmptyState = styled.div`
 
 type FormPreviewProps = {
   formData: FormData;
+  feature: FeatureType;
 }
 
-export function FormPreview({ formData }: FormPreviewProps) {
+export function FormPreview({ formData, feature }: FormPreviewProps) {
   return (
     <PreviewContainer>
       <FormTitle>{formData.name || 'Untitled form'}</FormTitle>
       
-      <InfoAlert message='This is a preview of your form content. The fields that you added will be displayed here.' />
+      {
+        feature === FeatureType.CREATE && (
+          <InfoAlert message='This is a preview of your form content. The fields that you added will be displayed here.' />
+        )
+      }
       
       <FormCard>
         {formData.fields.length === 0 ? (
@@ -100,9 +105,13 @@ export function FormPreview({ formData }: FormPreviewProps) {
               </FieldContainer>
             ))}
             
-            <SubmitButton>
-              {formData.submitButtonText || 'Submit'}
-            </SubmitButton>
+            {
+              feature === FeatureType.FILL_OUT && (
+                <SubmitButton>
+                  {formData.submitButtonText || 'Submit'}
+                </SubmitButton>
+              )
+            }
           </FormFields>
         )}
       </FormCard>

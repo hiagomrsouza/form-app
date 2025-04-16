@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { Colors } from "@/app/utils/Colors";
 import styled from "styled-components";
-import { FieldType, FormData, FormField } from '../types';
+import { FeatureType, FormData } from '../types';
 import { useRouter } from 'next/navigation';
+import { useSaveForm } from '@/api/UseSaveForm';
 import { FormBuilder } from './FormBuilder';
 import { FormPreview } from './FormPreview';
+import { Breadcrumbs, Button, ButtonContainer } from '@/app/components';
 
 const MainContainer = styled.div`
   display: grid;
@@ -66,6 +68,16 @@ const SaveButton = styled.button`
   }
 `
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+`;
+
 export function CreateForm() {
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -93,34 +105,8 @@ export function CreateForm() {
     setIsSaving(true);
 
     try {
-      const apiFormData = {
-        name: formData.name,
-        fields: formData.fields.reduce((acc: Record<string, any>, field: FormField) => {
-          acc[field.id] = {
-            type: field.type,
-            question: field.label,
-            required: field.required,
-            options: field.options
-          };
-          return acc;
-        }, {}),
-        submitButtonText: formData.submitButtonText
-      };
-
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8080/';
-      const response = await fetch(`${apiUrl}form/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(apiFormData),
-      });
-
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-
-      // Redirect to the forms list page
+      await useSaveForm(formData);
+      alert('Form saved successfully!');
       router.push('/forms');
     } catch (error) {
       console.error('Error saving form:', error);
@@ -130,8 +116,14 @@ export function CreateForm() {
     }
   };
 
+  const handleClickBack = (): void => {
+    router.push('/');
+  };
+
   return (
     <MainContainer>
+      <Breadcrumbs text='Form > Create' />
+
       <BuilderFormContainer>
         <BuildForm>
           <FormBuilder
@@ -151,7 +143,7 @@ export function CreateForm() {
 
       <ViewFormSection>
         <ViewForm>
-          <FormPreview formData={formData} />
+          <FormPreview formData={formData} feature={FeatureType.CREATE}/>
         </ViewForm>
       </ViewFormSection>
     </MainContainer>

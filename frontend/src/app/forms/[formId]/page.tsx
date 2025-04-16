@@ -1,6 +1,7 @@
+import FormView from "./components/FormView";
 
 export default function Home() {
   return (
-    <div>My form</div>
+    <FormView />
   );
 }

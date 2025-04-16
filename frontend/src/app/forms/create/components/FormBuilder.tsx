@@ -166,12 +166,12 @@ export function FormBuilder({ formData, onFormDataChange }: FormBuilderProps) {
     });
   };
 
-  const handleSubmitButtonTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onFormDataChange({
-      ...formData,
-      submitButtonText: e.target.value
-    });
-  };
+  // const handleSubmitButtonTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   onFormDataChange({
+  //     ...formData,
+  //     submitButtonText: e.target.value
+  //   });
+  // };
 
   const handleAddField = () => {
     const newField: FormField = {
@@ -306,7 +306,7 @@ export function FormBuilder({ formData, onFormDataChange }: FormBuilderProps) {
         )}
       </Section>
 
-      <SubmitButtonSection>
+      {/* <SubmitButtonSection>
         <SectionTitle>Default button text</SectionTitle>
         <SubmitButtonInput 
           type="text" 
@@ -314,7 +314,7 @@ export function FormBuilder({ formData, onFormDataChange }: FormBuilderProps) {
           onChange={handleSubmitButtonTextChange}
           placeholder="Submit"
         />
-      </SubmitButtonSection>
+      </SubmitButtonSection> */}
     </BuilderContainer>
   );
 }

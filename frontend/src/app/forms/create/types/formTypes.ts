@@ -21,3 +21,10 @@ export type FormData = {
   fields: FormField[];
   submitButtonText: string;
 }
+
+export enum FeatureType {
+  CREATE = 'create',
+  VIEW = 'view',
+  EDIT = 'edit',
+  FILL_OUT = 'fill_in',
+}

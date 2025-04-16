@@ -3,19 +3,13 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Form, getFieldCount, useAllForms } from "../../../api/UseAllForms";
-import Link from "next/link";
 import { Colors } from "@/app/utils/Colors";
 import { useRouter } from "next/navigation";
+import { Button, ButtonContainer } from "@/app/components";
 
 const MainContainer = styled.div`
   width: 100%;
   padding: 20px;
-`;
-
-const Title = styled.h1`
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333;
 `;
 
 const Table = styled.table`
@@ -58,14 +52,14 @@ const TableCell = styled.td`
 const LoadingMessage = styled.div`
   padding: 20px;
   text-align: center;
-  color: #666;
+  color: ${Colors.text.light};
 `;
 
 const ErrorMessage = styled.div`
   padding: 20px;
   text-align: center;
-  color: #d32f2f;
-  background-color: #ffebee;
+  color: ${Colors.text.critical};
+  background-color: ${Colors.background.danger};;
   border-radius: 4px;
   margin-bottom: 20px;
 `;
@@ -73,24 +67,9 @@ const ErrorMessage = styled.div`
 const EmptyMessage = styled.div`
   padding: 40px;
   text-align: center;
-  color: #666;
-  background-color: #f5f5f5;
+  color: ${Colors.text.light};
+  background-color: ${Colors.background.default};
   border-radius: 4px;
-`;
-
-const CreateButton = styled.a`
-  display: inline-block;
-  margin-bottom: 20px;
-  padding: 10px 16px;
-  background-color: ${Colors.button.default};;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  font-weight: 500;
-  
-  &:hover {
-    background-color: ${Colors.button.hover};
-  }
 `;
 
 export default function FormList() {
@@ -129,7 +108,6 @@ export default function FormList() {
   if (isLoading) {
     return (
       <MainContainer>
-        <Title>Forms</Title>
         <LoadingMessage>Loading forms...</LoadingMessage>
       </MainContainer>
     );
@@ -139,8 +117,14 @@ export default function FormList() {
     <MainContainer>
       {error && <ErrorMessage>{error}</ErrorMessage>}
       
-      <CreateButton onClick={handleClickCreateForm}>Create New Form</CreateButton>
-      
+      <ButtonContainer>
+        <Button
+          primary
+          label="Create New Form"
+          onClick={handleClickCreateForm}
+        />
+      </ButtonContainer>
+
       {forms.length > 0 ? (
         <Table>
           <TableHead>
