@@ -26,7 +26,6 @@ export default async function RootLayout(props: IRootLayoutProps) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {/* {props.children} */}
         <Base {...props} />
       </body>
     </html>

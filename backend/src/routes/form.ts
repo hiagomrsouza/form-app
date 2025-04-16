@@ -4,7 +4,7 @@ import { Form } from '@prisma/client'
 
 import prisma from '../db/db_client'
 import { serializer } from './middleware/pre_serializer'
-import { IEntityId } from './schemas/common'
+import { ICreateFormParams, IEntityId } from './schemas/common'
 import { ApiError } from '../errors'
 
 async function formRoutes(app: FastifyInstance) {
@@ -26,6 +26,43 @@ async function formRoutes(app: FastifyInstance) {
       } catch (err: any) {
         log.error({ err }, err.message)
         throw new ApiError('failed to fetch form', 400)
+      }
+    },
+  })
+
+  app.post<{
+    Body: ICreateFormParams
+    Reply: Form
+  }>('/create', {
+    async handler(req, reply) {
+      const { body } = req
+      log.debug('create form --->', body)
+      try {
+        const form = await prisma.form.create({
+          data: {
+            name: body.name,
+            fields: body.fields,
+          },
+        })
+        reply.code(201).send(form)
+      } catch (err: any) {
+        log.error({ err }, err.message)
+        throw new ApiError('failed to create form', 400)
+      }
+    },
+  })
+
+  app.get<{
+    Reply: Form[]
+  }>('/all', {
+    async handler(req, reply) {
+      log.debug('get all forms')
+      try {
+        const forms = await prisma.form.findMany()
+        reply.code(201).send(forms)
+      } catch (err: any) {
+        log.error({ err }, err.message)
+        throw new ApiError('failed to create form', 400)
       }
     },
   })
