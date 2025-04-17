@@ -5,7 +5,7 @@ import { Colors } from "@/app/utils/Colors";
 import styled from "styled-components";
 import { FeatureType, FieldType, FormData } from '../types';
 import { useRouter } from 'next/navigation';
-import { useSaveForm } from '@/api/UseSaveForm';
+import { saveForm } from '@/api/SaveForm';
 import { FormBuilder } from './FormBuilder';
 import { FormPreview } from './FormPreview';
 import { Breadcrumbs, SuccessAndErrorAlert } from '@/app/components';
@@ -132,7 +132,7 @@ export function CreateForm() {
     setIsSaving(true);
 
     try {
-      await useSaveForm(formData);
+      await saveForm(formData);
       alert('Form saved successfully!');
       router.push('/forms');
     } catch (error) {

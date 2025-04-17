@@ -3,47 +3,50 @@ import { z } from 'zod';
 const FormFieldSchema = z.object({
   type: z.string(),
   question: z.string(),
-  required: z.boolean(),
-  options: z.array(z.string()).optional(),
+  required: z.boolean()
 });
 
-const FormDataSchema = z.object({
+const FormSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
   fields: z.record(FormFieldSchema)
 });
 
-const FormResponseSchema = z.object({
-  statusCode: z.number(),
-  data: FormDataSchema,
-  message: z.string()
-});
+const FormsResponseSchema = z.array(FormSchema);
 
 export type FormField = z.infer<typeof FormFieldSchema>;
-export type FormData = z.infer<typeof FormDataSchema>;
-export type FormResponse = z.infer<typeof FormResponseSchema>;
+export type Form = z.infer<typeof FormSchema>;
 
-export async function useFormById(formId: string): Promise<FormData> {
+export async function GetAllForms(): Promise<Form[]> {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8080/';
   
   try {
-    const response = await fetch(`${apiUrl}form/${formId}`);
+    const response = await fetch(`${apiUrl}form/all`);
     
     if (!response.ok) {
       throw new Error(`API request failed with status ${response.status}`);
     }
-    
+
     const responseData = await response.json();
     
-    const validatedData = FormResponseSchema.parse(responseData);
+    const validatedData = FormsResponseSchema.parse(responseData.data);
     
-    return validatedData.data;
+    return validatedData;
   } catch (error) {
-
     if (error instanceof z.ZodError) {
       console.error('Validation error:', error.errors);
     }
     
     throw error;
   }
+}
+
+/**
+ * Calculates the number of fields in a form
+ * @param form The form object
+ * @returns The number of fields in the form
+ */
+export function getFieldCount(form: Form): number {
+  // Count the number of keys in the fields object
+  return Object.keys(form.fields).length;
 }

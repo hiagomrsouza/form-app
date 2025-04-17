@@ -7,7 +7,7 @@ import { FeatureType, FormData } from '../types';
 import { Button, InfoAlert, SpinnerLoading, SuccessAndErrorAlert } from '@/app/components';
 import { FormFieldAdded } from './FormFieldAdded';
 import { FormFieldInput } from './FormFieldInput';
-import { useSubmitForm, FormFieldSubmission } from '@/api/UseSubmitForm';
+import { submitForm, FormFieldSubmission } from '@/api/SubmitForm';
 
 const PreviewContainer = styled.div`
   display: flex;
@@ -163,7 +163,7 @@ export function FormPreview({ formData, feature, formId }: FormPreviewProps) {
         throw new Error('Form ID is missing');
       }
       
-      await useSubmitForm(formId, { fields: submissionFields });
+      await submitForm(formId, { fields: submissionFields });
       
       setSubmitSuccess(true);
       

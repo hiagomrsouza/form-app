@@ -40,7 +40,7 @@ export function transformFormDataForApi(formData: FormBuilderData): ApiFormData 
   };
 }
 
-export async function useSaveForm(formData: FormBuilderData): Promise<void> {
+export async function saveForm(formData: FormBuilderData): Promise<void> {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8080/';
   
   try {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Form, getFieldCount, useAllForms } from "../../../api/UseAllForms";
+import { Form, getFieldCount, GetAllForms } from "../../../api/GetAllForms";
 import { Colors } from "@/app/utils/Colors";
 import { useRouter } from "next/navigation";
 import { Button, ButtonContainer } from "@/app/components";
@@ -82,7 +82,7 @@ export default function FormList() {
   const fetchForms = async () => {
     try {
       setIsLoading(true);
-      const formsData = await useAllForms();
+      const formsData = await GetAllForms();
       setForms(formsData);
       setError(null);
     } catch (err) {

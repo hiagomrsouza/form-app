@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { FormData as FormPreviewData, FormField as FormPreviewField, FieldType, FeatureType } from "@/app/forms/create/types";
-import { FormData, useFormById } from "@/api/UseFormById";
+import { FormData, getFormById } from "@/api/GetFormById";
 import { FormPreview } from "@/app/forms/create/components/FormPreview";
 import styled from 'styled-components';
 import { Colors } from '@/app/utils/Colors';
@@ -61,7 +61,7 @@ export default function FormView() {
       if (!formId) {
         setError('Form not found');
       }
-      const apiFormData = await useFormById(formId);
+      const apiFormData = await getFormById(formId);
       const convertedData = buildFormPreviewData(apiFormData);
       
       setFormData(convertedData);

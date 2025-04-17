@@ -13,7 +13,7 @@ const FormSubmissionSchema = z.object({
 export type FormFieldSubmission = z.infer<typeof FormFieldSubmissionSchema>;
 export type FormSubmission = z.infer<typeof FormSubmissionSchema>;
 
-export async function useSubmitForm(
+export async function submitForm(
   formId: string, 
   submissionData: FormSubmission
 ): Promise<void> {
