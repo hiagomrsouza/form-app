@@ -22,7 +22,7 @@ export const getSeedData = async () => {
           required: true,
         },
         'field-4': {
-          type: 'Date',
+          type: 'date',
           question: 'Date of Birth?',
           required: true,
         },

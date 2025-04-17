@@ -10,19 +10,48 @@ A web application that allows users to create custom forms, view them, and fill 
 
 1. Clone the repository and navigate to the project root directory
 
-2. Start the application using Docker Compose:
-   ```bash
-   docker compose up -d
-   ```
-
-3. Run migrations and seed data:
-   ```bash
+2. Start the backend using Docker Compose:
+    ```bash
    cd backend
+   ```
+   ```bash
+   docker compose build && docker compose up -d
+   ```
+   ```bash
    npm run migrate
+   ```
+   ```bash
    npm run seed
    ```
 
+3. start the frontend using Docker Compose
+    ```bash
+   cd ../frontend
+   ```
+   ```bash
+   docker compose build && docker compose up
+   ```
+
 4. Access the application at [http://localhost:3000](http://localhost:3000)
+
+### Container Won't Start
+
+Check if there are any port conflicts:
+
+```bash
+# The database (postgres) uses the port port 5432, check if already in use
+lsof -i :5432
+```
+
+```bash
+# The backend uses the port port 8080, check if already in use
+lsof -i :8080
+```
+
+```bash
+# The frontend uses the port port 3000, check if already in use
+lsof -i :3000
+```
 
 ## Features
 

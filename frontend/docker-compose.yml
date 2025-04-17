@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   frontend:
     container_name: vial-frontend
@@ -33,8 +31,3 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
-
-networks:
-  default:
-    name: vial-network
-    external: true
