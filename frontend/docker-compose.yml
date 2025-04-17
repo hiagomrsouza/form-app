@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  frontend:
+    container_name: vial-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+      - /usr/app/.next
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:8080/
+      - WATCHPACK_POLLING=true  # Enable polling for file changes in Docker
+    restart: unless-stopped
+    # For better performance in development
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+    # Enable hot reloading
+    stdin_open: true
+    tty: true
+    # Healthcheck to ensure the application is running properly
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+networks:
+  default:
+    name: vial-network
+    external: true
