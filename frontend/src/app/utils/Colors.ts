@@ -4,6 +4,7 @@ export const Colors = {
     subdued: "#F9FAFB",
     pressed: "#E5E7EB",
     info: "#1d4ed8",
+    success: "#A7F3D0",
     danger: "#ffebee",
   },
   border: {
@@ -23,6 +24,6 @@ export const Colors = {
     basic: "#FFFFFF",
     basicHover: "#F9FAFB",
     hover: "#1d4ed8",
-    disabled: "#1d4ed8",
+    disabled: "#F9FAFB",
   },
 }

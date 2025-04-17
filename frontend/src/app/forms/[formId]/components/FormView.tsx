@@ -34,7 +34,7 @@ export const buildFormPreviewData = (apiFormData: FormData): FormPreviewData => 
     type: field.type as FieldType,
     label: field.question,
     required: field.required,
-    options: [],
+    options: field.options || [],
   }));
 
   return {
@@ -111,7 +111,11 @@ export default function FormView() {
       <SpinnerLoading isLoading={isLoading} />
       
       {!isLoading && !error && formData && (
-        <FormPreview formData={formData} feature={FeatureType.VIEW} />
+        <FormPreview
+          formData={formData}
+          feature={FeatureType.VIEW}
+          formId={params?.formId as string}
+        />
       )}
     </Container>
   );

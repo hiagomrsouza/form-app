@@ -20,28 +20,6 @@ const Container = styled.div`
   padding: 24px;
 `;
 
-const ErrorContainer = styled.div`
-  padding: 16px;
-  background-color: ${Colors.background.danger};
-  color: ${Colors.text.critical};
-  border-radius: 8px;
-  margin-bottom: 16px;
-`;
-
-const BackButton = styled.button`
-  margin-bottom: 20px;
-  padding: 10px 16px;
-  background-color: ${Colors.button.basic};
-  border: none;
-  cursor: pointer;
-  color: ${Colors.text.default};
-  border-radius: 4px;
-  
-  &:hover {
-    background-color: ${Colors.button.basicHover};
-  }
-`;
-
 export default function FormFillOut() {
   const router = useRouter();
   const params = useParams();
@@ -93,7 +71,11 @@ export default function FormFillOut() {
       <SpinnerLoading isLoading={isLoading} />
       
       {!isLoading && !error && formData && (
-        <FormPreview formData={formData} feature={FeatureType.FILL_OUT} />
+        <FormPreview
+          formData={formData}
+          feature={FeatureType.FILL_OUT}
+          formId={params?.formId as string}
+        />
       )}
     </Container>
   );

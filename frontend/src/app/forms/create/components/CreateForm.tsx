@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import { Colors } from "@/app/utils/Colors";
 import styled from "styled-components";
-import { FeatureType, FormData } from '../types';
+import { FeatureType, FieldType, FormData } from '../types';
 import { useRouter } from 'next/navigation';
 import { useSaveForm } from '@/api/UseSaveForm';
 import { FormBuilder } from './FormBuilder';
 import { FormPreview } from './FormPreview';
-import { Breadcrumbs, Button, ButtonContainer } from '@/app/components';
+import { Breadcrumbs, SuccessAndErrorAlert } from '@/app/components';
 
 const MainContainer = styled.div`
   display: grid;
@@ -81,6 +81,9 @@ const Container = styled.div`
 export function CreateForm() {
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
+  const [submitError, setSubmitError] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     fields: [],
@@ -92,13 +95,37 @@ export function CreateForm() {
   };
 
   const handleSaveForm = async () => {
+    setSubmitError(false);
     if (!formData.name) {
-      alert('Please enter a form name');
+      setAlertMessage('Please enter a form name');
+      setSubmitError(true)
       return;
     }
 
     if (formData.fields.length === 0) {
-      alert('Please add at least one field to your form');
+      setAlertMessage('Please add at least one field to your form');
+      setSubmitError(true)
+      return;
+    }
+
+    const hasLabelEmpty = formData.fields.find((field) => (field.label.trim() === ''));
+    if (hasLabelEmpty) {
+      setAlertMessage('Please add label to all fields');
+      setSubmitError(true)
+      return;
+    }
+
+    const fieldTypesWithOptions = [FieldType.CHECKBOX, FieldType.RADIO, FieldType.SELECT];
+    const hasOptionEmpty = formData.fields.some((field) => (
+      fieldTypesWithOptions.includes(field.type)
+      && (field?.options?.length === 0 
+        || (field?.options?.length === 1 
+          && field?.options[0].trim() === '')
+      ))
+    );
+    if (hasOptionEmpty) {
+      setAlertMessage('Please add options to the fields');
+      setSubmitError(true)
       return;
     }
 
@@ -111,13 +138,10 @@ export function CreateForm() {
     } catch (error) {
       console.error('Error saving form:', error);
       alert('Failed to save form. Please try again.');
+      setSubmitError(true)
     } finally {
       setIsSaving(false);
     }
-  };
-
-  const handleClickBack = (): void => {
-    router.push('/');
   };
 
   return (
@@ -126,6 +150,18 @@ export function CreateForm() {
 
       <BuilderFormContainer>
         <BuildForm>
+
+          {
+            submitError && alertMessage && (
+              <div style={{ marginBottom: '12px' }}>
+                <SuccessAndErrorAlert
+                  success={false} 
+                  message={alertMessage} 
+                />
+              </div>
+            )
+          }
+
           <FormBuilder
             formData={formData}
             onFormDataChange={handleFormDataChange}

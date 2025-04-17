@@ -3,7 +3,8 @@ import { z } from 'zod';
 const FormFieldSchema = z.object({
   type: z.string(),
   question: z.string(),
-  required: z.boolean()
+  required: z.boolean(),
+  options: z.array(z.string()).optional(),
 });
 
 const FormDataSchema = z.object({
